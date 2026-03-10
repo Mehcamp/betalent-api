@@ -7,31 +7,19 @@
 |
 */
 
-import { middleware } from '#start/kernel'
 import router from '@adonisjs/core/services/router'
-import { controllers } from '#generated/controllers'
 
 router.get('/', () => {
-  return { hello: 'world' }
+  return { message: 'API running' }
 })
 
-router
-  .group(() => {
-    router
-      .group(() => {
-        router.post('signup', [controllers.NewAccount, 'store'])
-        router.post('login', [controllers.AccessToken, 'store'])
-        router.post('logout', [controllers.AccessToken, 'destroy']).use(middleware.auth())
-      })
-      .prefix('auth')
-      .as('auth')
+router.get('/clients', '#controllers/clients_controller.index')
+router.post('/clients', '#controllers/clients_controller.store')
 
-    router
-      .group(() => {
-        router.get('/profile', [controllers.Profile, 'show'])
-      })
-      .prefix('account')
-      .as('profile')
-      .use(middleware.auth())
-  })
-  .prefix('/api/v1')
+router.get('/products', '#controllers/products_controller.index')
+router.post('/products', '#controllers/products_controller.store')
+
+router.get('/gateways', '#controllers/gateways_controller.index')
+
+router.get('/transactions', '#controllers/transactions_controller.index')
+router.post('/transactions', '#controllers/transactions_controller.store')
