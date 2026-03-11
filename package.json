@@ -11,6 +11,7 @@
   "scripts": {
     "start": "node bin/server.js",
     "build": "node ace build",
+    "ace": "node --loader ts-node/esm ace",
     "dev": "tsx watch bin/server.ts",
     "test": "node ace test",
     "lint": "eslint .",
@@ -67,6 +68,7 @@
     "@japa/api-client": "^3.2.1",
     "@tuyau/core": "^1.0.0",
     "@vinejs/vine": "^4.3.0",
+    "axios": "^1.13.6",
     "better-sqlite3": "^12.6.2",
     "luxon": "^3.7.2",
     "mysql2": "^3.19.1",
