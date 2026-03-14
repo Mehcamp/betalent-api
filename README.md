@@ -247,13 +247,6 @@ POST /transactions
 POST /products
 ```
 
----
-## Listar produtos
-
-```
-GET /products
-```
-
 ### Body
 
 ```
@@ -261,6 +254,13 @@ GET /products
 	"name": "bolsa",
 	"amount": 150
 }
+```
+
+---
+## Listar produtos
+
+```
+GET /products
 ```
 
 ---
