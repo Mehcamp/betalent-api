@@ -241,6 +241,13 @@ POST /transactions
 
 # Rotas Privadas da API
 
+## Criação de produtos
+
+```
+POST /products
+```
+
+---
 ## Listar produtos
 
 ```
