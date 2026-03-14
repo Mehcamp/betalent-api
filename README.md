@@ -27,6 +27,7 @@ Para simplificação do escopo do teste, considera-se que os clientes já estão
 - MySQL
 - Lucid ORM
 - Axios
+- JSON Web Token (JWT) para autenticação
 - Docker (para execução dos gateways mock)
 
 ---
@@ -136,8 +137,8 @@ Exemplo:
 DB_CONNECTION=mysql
 DB_HOST=localhost
 DB_PORT=3306
-DB_USER=root
-DB_PASSWORD=
+DB_USER=user
+DB_PASSWORD=password
 DB_DATABASE=betalant_test
 ```
 
@@ -146,7 +147,7 @@ DB_DATABASE=betalant_test
 ## 4 - Rodar migrations
 
 ```
-node ace migration:run
+npm run ace migration:run
 ```
 
 ---
@@ -154,7 +155,7 @@ node ace migration:run
 ## 5 - Rodar seeders
 
 ```
-node ace db:seed
+npm run ace db:seed
 ```
 
 Isso irá criar os gateways iniciais no banco.

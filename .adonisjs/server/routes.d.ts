@@ -7,7 +7,6 @@ export type ScannedRoutes = {
     'auth.login': { paramsTuple?: []; params?: {} }
     'transactions.store': { paramsTuple?: []; params?: {} }
     'clients.index': { paramsTuple?: []; params?: {} }
-    'clients.store': { paramsTuple?: []; params?: {} }
     'products.index': { paramsTuple?: []; params?: {} }
     'products.store': { paramsTuple?: []; params?: {} }
     'gateways.index': { paramsTuple?: []; params?: {} }
@@ -29,7 +28,6 @@ export type ScannedRoutes = {
   POST: {
     'auth.login': { paramsTuple?: []; params?: {} }
     'transactions.store': { paramsTuple?: []; params?: {} }
-    'clients.store': { paramsTuple?: []; params?: {} }
     'products.store': { paramsTuple?: []; params?: {} }
     'transactions.refund': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
   }
