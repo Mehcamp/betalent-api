@@ -3,11 +3,20 @@
 ## Sobre o projeto
 
 Este projeto consiste em uma API RESTful para gerenciamento de pagamentos utilizando múltiplos gateways.
-A API foi desenvolvida como parte do teste técnico da BeTalent.
 
-O sistema permite realizar compras utilizando diferentes gateways de pagamento. Caso o primeiro gateway falhe, o sistema tenta automaticamente o próximo gateway disponível, respeitando a prioridade configurada no banco de dados.
+O sistema permite realizar compras utilizando diferentes gateways de pagamento. Caso o primeiro gateway falhe, o sistema tenta automaticamente o próximo gateway disponível, respeitando a prioridade configurada no banco de dados (estratégia de fallback).
 
-A arquitetura foi pensada para permitir a adição de novos gateways de forma simples e modular.
+Além do fluxo básico de pagamento, o projeto também contempla funcionalidades adicionais esperadas no nível 2 do desafio, incluindo:
+
+- Autenticação de usuários com geração de Bearer Token
+
+- Proteção das rotas sensíveis utilizando middleware de autenticação
+
+- Implementação de reembolso de transações, enviando a solicitação para o mesmo gateway responsável pelo pagamento original
+
+O sistema também permite que uma transação contenha múltiplos produtos, sendo que o valor total da compra é calculado internamente pelo backend, garantindo maior segurança e evitando manipulação de valores pelo cliente.
+
+Para simplificação do escopo do teste, considera-se que os clientes já estão previamente cadastrados no banco de dados, sendo utilizados apenas como referência no momento da criação das transações.
 
 ---
 
@@ -174,7 +183,38 @@ http://localhost:3333
 
 ---
 
-# Rotas da API
+# Rotas Públicas da API
+
+## Login
+
+Para acessar rotas administrativas foi implementado um endpoint de autenticação simples.
+
+## Usuário inicial
+
+Para facilitar os testes da aplicação, um usuário administrativo é criado através de seed do banco de dados.
+
+```
+email: admin@email.com
+password: 123456
+role: ADMIN
+```
+
+Esse usuário pode ser utilizado para autenticação e acesso às rotas administrativas.
+
+```
+POST /login
+```
+
+### Body
+
+```
+{
+  "email": "admin@email.com",
+  "password": "123456"
+}
+```
+
+---
 
 ## Realizar compra
 
@@ -198,7 +238,7 @@ POST /transactions
 }
 ```
 
----
+# Rotas Privadas da API
 
 ## Listar produtos
 
@@ -214,6 +254,8 @@ GET /products
 GET /clients
 ```
 
+Para simplificação do escopo do teste técnico, os clientes são considerados previamente cadastrados no sistema.
+
 ---
 
 ## Listar transações
@@ -222,14 +264,22 @@ GET /clients
 GET /transactions
 ```
 
----
+## Reembolsar transação
 
-# Observações
+```
+POST /transactions/:id/refund
+```
 
-- O valor da compra é sempre calculado no backend.
-- Apenas os últimos 4 dígitos do cartão são armazenados.
-- O sistema suporta múltiplos produtos por transação.
-- A arquitetura permite adicionar novos gateways facilmente através da tabela `gateways`.
+### Descrição
+
+Realiza o reembolso de uma transação previamente registrada.
+
+O sistema identifica automaticamente qual gateway foi utilizado na transação original e envia a requisição de reembolso para o mesmo gateway.
+
+Após o sucesso da operação:
+
+- o status da transação é atualizado para `refunded`
+- a alteração é persistida no banco de dados
 
 ---
 
@@ -237,15 +287,6 @@ GET /transactions
 
 Algumas melhorias planejadas para evolução do projeto:
 
-- Implementação de autenticação de usuários
-- Controle de acesso por roles
-- Endpoint de reembolso de transações
 - Validação de dados utilizando VineJS
 - Testes automatizados (TDD)
 - Docker Compose para orquestração completa do ambiente
-
----
-
-# Autora
-
-Melissa Sequeira

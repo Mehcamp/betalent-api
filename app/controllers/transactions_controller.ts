@@ -16,4 +16,12 @@ export default class TransactionsController {
 
     return transaction
   }
+
+  async refund({ params }: HttpContext) {
+    const paymentService = new PaymentService()
+
+    const paramsId = await paymentService.refund(params.id)
+
+    return paramsId
+  }
 }

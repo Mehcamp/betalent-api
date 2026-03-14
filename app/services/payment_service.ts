@@ -6,6 +6,7 @@ import Product from '#models/product'
 import Transaction from '#models/transaction'
 import TransactionProduct from '#models/transaction_product'
 import Gateway from '#models/gateway'
+import axios from 'axios'
 
 export class PaymentService {
   async processPayment(data: {
@@ -16,7 +17,6 @@ export class PaymentService {
   }) {
     const client = await Client.findOrFail(data.clientId)
 
-    // calcular valor total
     let amount = 0
     const productList: { product: Product; quantity: number }[] = []
 
@@ -65,12 +65,16 @@ export class PaymentService {
 
         const lastNumbers = data.cardNumber.slice(-4)
 
+        console.log('Gateway usado:', gateway.name)
+        console.log('Gateway data:', response?.data)
+        console.log('Gateway id:', response?.data.id)
+
         const transaction = await Transaction.create({
           clientId: client.id,
           gatewayId: gateway.id,
           amount: amount,
           status: 'success',
-          externalId: response?.id ?? null,
+          externalId: response?.data.id,
           cardLastNumbers: lastNumbers,
         })
 
@@ -90,5 +94,41 @@ export class PaymentService {
     }
 
     throw new Error('All gateways failed')
+  }
+
+  async refund(transactionId: number) {
+    const transaction = await Transaction.findOrFail(transactionId)
+
+    const gateway = await Gateway.findOrFail(transaction.gatewayId)
+
+    if (gateway.name === 'Gateway 1') {
+      await axios.post('http://localhost:3001/charge_back', {
+        id: transaction.externalId,
+      })
+
+      transaction.status = 'refunded'
+      await transaction.save()
+
+      return {
+        transactionId: transaction.id,
+        status: 'refunded',
+      }
+    }
+
+    if (gateway.name === 'Gateway 2') {
+      await axios.post('http://localhost:3002/transacoes/reembolso', {
+        id: transaction.externalId,
+      })
+
+      transaction.status = 'refunded'
+      await transaction.save()
+
+      return {
+        transactionId: transaction.id,
+        status: 'refunded',
+      }
+    }
+
+    throw new Error('Gateway not supported')
   }
 }

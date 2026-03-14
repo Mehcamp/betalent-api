@@ -70,9 +70,11 @@
     "@vinejs/vine": "^4.3.0",
     "axios": "^1.13.6",
     "better-sqlite3": "^12.6.2",
+    "jsonwebtoken": "^9.0.3",
     "luxon": "^3.7.2",
     "mysql2": "^3.19.1",
-    "reflect-metadata": "^0.2.2"
+    "reflect-metadata": "^0.2.2",
+    "uuid": "^13.0.0"
   },
   "hotHook": {
     "boundaries": [
