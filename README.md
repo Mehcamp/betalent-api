@@ -286,7 +286,7 @@ Após o sucesso da operação:
 
 # Possíveis melhorias
 
-Algumas melhorias planejadas para evolução do projeto:
+Algumas melhorias para a evolução do projeto:
 
 - Validação de dados utilizando VineJS
 - Testes automatizados (TDD)
