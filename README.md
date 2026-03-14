@@ -254,6 +254,15 @@ POST /products
 GET /products
 ```
 
+### Body
+
+```
+{
+	"name": "bolsa",
+	"amount": 150
+}
+```
+
 ---
 
 ## Listar clientes
